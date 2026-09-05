@@ -67,6 +67,6 @@
     "href": "labs/lab 1/lab1.html",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "",
-    "text": "test"
+    "text": "##Introduction The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. Key deliverables include building the development board, writing Verilog to control LEDs, programming the FPGA in verilog, getting comfortable with working with circuits, and working with a 7-segment display board."
   }
 ]
