@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "Resources",
+    "section": "",
+    "text": "E155 Syllabus"
+  },
+  {
+    "objectID": "labs.html#lab-2---multiplexed-7-segment-display",
+    "href": "labs.html#lab-2---multiplexed-7-segment-display",
+    "title": "Labs",
+    "section": "Lab 2 - Multiplexed 7-Segment Display",
+    "text": "Lab 2 - Multiplexed 7-Segment Display"
+  },
+  {
+    "objectID": "labs.html#lab-3---keypad-scanner",
+    "href": "labs.html#lab-3---keypad-scanner",
+    "title": "Labs",
+    "section": "Lab 3 - Keypad Scanner",
+    "text": "Lab 3 - Keypad Scanner"
+  },
+  {
+    "objectID": "labs.html#lab-4---digital-audio",
+    "href": "labs.html#lab-4---digital-audio",
+    "title": "Labs",
+    "section": "Lab 4 - Digital Audio",
+    "text": "Lab 4 - Digital Audio"
+  },
+  {
+    "objectID": "labs.html#lab-5---interrupts",
+    "href": "labs.html#lab-5---interrupts",
+    "title": "Labs",
+    "section": "Lab 5 - Interrupts",
+    "text": "Lab 5 - Interrupts"
+  },
+  {
+    "objectID": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "href": "labs.html#lab-6---the-internet-of-things-and-serial-peripheral-interface",
+    "title": "Labs",
+    "section": "Lab 6 - The Internet of Things and Serial Peripheral Interface",
+    "text": "Lab 6 - The Internet of Things and Serial Peripheral Interface"
+  },
+  {
+    "objectID": "labs.html#lab-7---the-advanced-encryption-standard-aes",
+    "href": "labs.html#lab-7---the-advanced-encryption-standard-aes",
+    "title": "Labs",
+    "section": "Lab 7 - The Advanced Encryption Standard (AES)",
+    "text": "Lab 7 - The Advanced Encryption Standard (AES)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "E155 Portfolio",
+    "section": "",
+    "text": "Lily Anfang is a senior engineering student at Harvey Mudd College specializing in biomedical and electrical engineering. They have completed research in the Harvey Mudd CACTI Lab as well as the FAMU-FSU College of Engineering RIDER Lab. They are currently researching in the Harvey Mudd Cell Culture Microfluidics and Tissue Engineering (CuTE) Lab. They are interested in analog electrical design, embedded systems, and medical devices. Their current research focusses on modulating molecular cargo in glioblastoma exosomes."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "E155 Blog",
+    "section": "",
+    "text": "Hello Quarto\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nSep 4, 2026\n\n\nLily Anfang\n\n\n\n\n\nNo matching items"
+  }
+]
