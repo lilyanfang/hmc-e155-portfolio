@@ -1,0 +1,19 @@
+---
+title: "E155 Portfolio"
+image: images/headshot.jpg
+about:
+    template: jolla
+    links:
+        - icon: linkedin
+          text: LinkedIn
+          href: https://www.linkedin.com/in/lily-anfang/
+        - icon: github
+          text: GitHub
+          href: https://github.com/lilyanfang
+
+---
+Lily Anfang is a senior engineering student at Harvey Mudd College specializing in biomedical and electrical engineering. 
+They have completed research in the Harvey Mudd CACTI Lab as well as the FAMU-FSU College of Engineering RIDER Lab.
+They are currently researching in the Harvey Mudd Cell Culture Microfluidics and Tissue Engineering (CuTE) Lab.
+They are interested in analog electrical design, embedded systems, and medical devices.
+Their current research focusses on modulating molecular cargo in glioblastoma exosomes. 

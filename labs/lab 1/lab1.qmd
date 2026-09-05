@@ -1,0 +1,9 @@
+---
+title: "Lab 1: FPGA and MCU Setup and Testing"
+description: ""
+author: "Lily Anfang"
+date: ""
+categories:
+  - Lab Report
+draft: false
+---

@@ -1,0 +1,9 @@
+---
+title: "Lab 6: The Internet of Things and Serial Peripheral Interface"
+description: ""
+author: "Lily Anfang"
+date: ""
+categories:
+  - labreport
+draft: false
+---
