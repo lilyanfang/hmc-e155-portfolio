@@ -67,13 +67,20 @@
     "href": "labs/lab 1/lab1.html",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "",
-    "text": "The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. Key deliverables include building the development board, writing Verilog to control LEDs, programming the FPGA in verilog, getting comfortable with working with circuits, and working with a 7-segment display board. ## Design and Testing Methodology Hardware was assembled following the Lab 1 Instructions. The board was built using a combination of hand soldering and soldering paste."
+    "text": "The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. Key deliverables include building the development board, writing Verilog to control LEDs, programming the FPGA in verilog, getting comfortable with working with circuits, and working with a 7-segment display board."
   },
   {
     "objectID": "labs/lab 1/lab1.html#introduction",
     "href": "labs/lab 1/lab1.html#introduction",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "",
-    "text": "The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. Key deliverables include building the development board, writing Verilog to control LEDs, programming the FPGA in verilog, getting comfortable with working with circuits, and working with a 7-segment display board. ## Design and Testing Methodology Hardware was assembled following the Lab 1 Instructions. The board was built using a combination of hand soldering and soldering paste."
+    "text": "The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. Key deliverables include building the development board, writing Verilog to control LEDs, programming the FPGA in verilog, getting comfortable with working with circuits, and working with a 7-segment display board."
+  },
+  {
+    "objectID": "labs/lab 1/lab1.html#design-and-testing-methodology",
+    "href": "labs/lab 1/lab1.html#design-and-testing-methodology",
+    "title": "Lab 1: FPGA and MCU Setup and Testing",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\nHardware was assembled following the Lab 1 Instructions. The board was built using a combination of hand soldering and soldering paste."
   }
 ]
