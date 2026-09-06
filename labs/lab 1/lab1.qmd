@@ -3,6 +3,7 @@ title: "Lab 1: FPGA and MCU Setup and Testing"
 description: ""
 author: "Lily Anfang"
 date: ""
+image: images/CounterCalc.png
 categories:
   - Lab Report
 draft: false
@@ -22,5 +23,5 @@ at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the rati
 the input and output frequency and used that as the counter MAX. Then, if the counter was
 between HALFMAX and MAX I had the LED on. 
 ::: {.callout-caution collapse="true" title="spoiler: counter calculations"}
-![](images/CounterCalc.png)
+test
 :::
