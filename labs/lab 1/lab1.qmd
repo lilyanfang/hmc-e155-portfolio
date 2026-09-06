@@ -8,4 +8,15 @@ categories:
 draft: false
 ---
 
-test
+## Introduction
+The goal of this lab is to create familiarity with the FPGA and MCU boards used in E155. 
+Key deliverables include building the development board, writing Verilog to control LEDs,
+programming the FPGA in verilog, getting comfortable with working with circuits, and 
+working with a 7-segment display board.
+
+## Design and Testing Methodology
+Hardware was assembled following the [Lab 1 Instructions](https://hmc-e155.github.io/lab/lab1/). The board was built using a combination of hand soldering and soldering paste. 
+
+::: {.callout-caution collapse="true" title="spoiler"}
+test test
+:::
