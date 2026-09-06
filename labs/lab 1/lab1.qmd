@@ -3,7 +3,6 @@ title: "Lab 1: FPGA and MCU Setup and Testing"
 description: ""
 author: "Lily Anfang"
 date: ""
-image: images/CounterCalc.png
 categories:
   - Lab Report
 draft: false
@@ -22,6 +21,7 @@ To make LED 2 blink at 2.4Hz, I used a counter to convert from the high speed os
 at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the ratio between
 the input and output frequency and used that as the counter MAX. Then, if the counter was
 between HALFMAX and MAX I had the LED on. 
+
 ::: {.callout-caution collapse="true" title="spoiler: counter calculations"}
-test
+![](images/CounterCalc.png)
 :::
