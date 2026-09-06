@@ -81,6 +81,6 @@
     "href": "labs/lab 1/lab1.html#design-and-testing-methodology",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology\nHardware was assembled following the Lab 1 Instructions. The board was built using a combination of hand soldering and soldering paste.\nTo make LED 2 blink at 2.4Hz, I used a counter to convert from the high speed oscillator, at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the ratio between the input and output frequency and used that as the counter MAX. Then, if the counter was between HALFMAX and MAX I had the LED on. ::: {.callout-caution collapse=“true” title=“spoiler: counter calculations”}  :::"
+    "text": "Design and Testing Methodology\nHardware was assembled following the Lab 1 Instructions. The board was built using a combination of hand soldering and soldering paste.\nTo make LED 2 blink at 2.4Hz, I used a counter to convert from the high speed oscillator, at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the ratio between the input and output frequency and used that as the counter MAX. Then, if the counter was between HALFMAX and MAX I had the LED on. ::: {.callout-caution collapse=“true” title=“spoiler: counter calculations”} test :::"
   }
 ]
