@@ -17,6 +17,10 @@ working with a 7-segment display board.
 ## Design and Testing Methodology
 Hardware was assembled following the [Lab 1 Instructions](https://hmc-e155.github.io/lab/lab1/). The board was built using a combination of hand soldering and soldering paste. 
 
-::: {.callout-caution collapse="true" title="spoiler"}
-test test
+To make LED 2 blink at 2.4Hz, I used a counter to convert from the high speed oscillator,
+at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the ratio between
+the input and output frequency and used that as the counter MAX. Then, if the counter was
+between HALFMAX and MAX I had the LED on. 
+::: {.callout-caution collapse="true" title="spoiler: counter calculations"}
+![](images/CounterCalc.png)
 :::
