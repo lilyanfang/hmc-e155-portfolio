@@ -37,3 +37,35 @@ To test, three different test benches were created. The first was a test bench f
 
 ## Technical Documentation
 
+The schematic and block diagram below show the layout of modules and the wiring of the board. The modules were designed so that the internal high frequency oscillator, the switch to 7-segment display, and the counter are all individual modules called by the top module. The top module also contains the logic statements for LEDS 0 and 1 to reduce the lines of written code. 
+
+::: {.callout-caution collapse="true" title="spoiler: schematic and block diagram"}
+![](images/blockdiagram.png)
+![](images/schematic.png)
+:::
+
+## Testbench Results
+
+The switches to 7-segment LEDs testbench ran successfully. As shown below, the tests all showed anticipated behavior. Additionally, the waveforms match the truth table (noting that the diodes are on for a seg value of 0). 
+
+::: {.callout-important collapse="false" title="testbench waveforms and test results for switches to 7-segment LEDs"}
+![](images/seg7wave.png)
+![](images/seg7tests.png)
+:::
+
+The counter testbech also ran successfully. As shown below, the counter only activates when reset is off and enable is on. Additionally, the counter counts up to the specifed MAX paramet (for this test it was 8) before looping back to zero as expected. Finally, the LED 2 output signal also matches expectations as it is only on for the durration when the counter is between HALFMAX (4 in this case) and the MAX.
+
+::: {.callout-important collapse="false" title="testbench waveforms for the counter"}
+![](images/counterwave1.png)
+![](images/counterwave2.png)
+:::
+
+The top modulue matches anticipated results as well. As expected, the counter and switch to 7-segment modules both work and show the same behavior as when they were tested individually. Additionally, the logic gates for LED 0 and 1 match the provided truth tables. Finally, estimating the wavelength of one clock cycle for the HSOSC, it is approximately 164ns, which maps to a frequency of roughly 6MHz as intended. As such, it can be concluded that at the set parameters for MAX and width, LED 2 will blink at 2.4 Hz because the HSOSC clock is at the intended speed and the counter module behaves correctly. 
+
+::: {.callout-important collapse="false" title="testbench waveforms and tests for the top module"}
+![](images/topwave1.png.png)
+![](images/toptests.png.png)
+![](images/topwave2.png)
+:::
+
+## Hardware Results
