@@ -60,7 +60,7 @@
     "href": "blog.html",
     "title": "E155 Blog",
     "section": "",
-    "text": "Hello Quarto\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nSep 4, 2026\n\n\nLily Anfang\n\n\n\n\n\nNo matching items"
+    "text": "First Week of MicroPs\n\n\nGoals for the semester\n\n\n\n\n\nSep 4, 2026\n\n\nLily Anfang\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "labs/lab 1/lab1.html",
@@ -102,7 +102,7 @@
     "href": "labs/lab 1/lab1.html#hardware-results",
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Hardware Results",
-    "text": "Hardware Results\nTo test on hardware, a switch was used for reset. As such, the code was modified to account for reset being low when pressed and otherwise high. This change was verified by modifying the testbench and it ran successfully.\nWhen uploaded to the board, the code ran successfully. A full sweep of the switch inputs showed both LEDs 0 and 1 as well as the 7-segment LED display had expected behavior. Additionally, LED 2 blinked 24 times over a 10 second period (shout out Enzo for helping me count), showing that it was blinking at a speed of 2.4Hz. The hardware setup for the board is shown below.\n\n\n\n\n\n\nImportanthardware setup of board connected to 7-segment LED display"
+    "text": "Hardware Results\nTo test on hardware, a switch was used for reset. As such, the code was modified to account for reset being low when pressed and otherwise high. This change was verified by modifying the testbench and it ran successfully.\nWhen uploaded to the board, the code ran successfully and met all specifications. A full sweep of the switch inputs showed both LEDs 0 and 1 as well as the 7-segment LED display had expected behavior. Additionally, LED 2 blinked 24 times over a 10 second period (shout out Enzo for helping me count), showing that it was blinking at a speed of 2.4Hz. The hardware setup for the board is shown below.\n\n\n\n\n\n\nImportanthardware setup of board connected to 7-segment LED display"
   },
   {
     "objectID": "labs/lab 1/lab1.html#conclusion",
@@ -117,5 +117,12 @@
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "AI Prototype Summary",
     "text": "AI Prototype Summary\nI used Gemini to write the code. It wrote code that successfully synthesized on the first try. I would say the quality is pretty high because the code included multiple comments correctly explaining the lines. However, these comments feel more like they were taken from a lecture and less like actual coding project because they explain the math but not the rationale for why certain design choices were made. However, there are a couple major flaws with the code that it wrote. Primarily, this code doesn’t include a reset signal which, while not required, would likely be more useful for application. Secondly, at no point in the code is the LED’s state explicitly set to 0 or 1. Instead, the code just toggles the LED value with a not gate. As such, if the LED starts out in an undefined state, this code could never get it to a defined state and the LED wouldn’t blink.\nThe code it wrote used “SB_HFOSC” and “u_hfosc” which differed from the syntax we were provided in class but functioned the same. Other than that, there was really no new structures or syntax provided although it used a different method for toggling the LED than what I wrote in my code.\nIf I were to use an LLM in my future workflow, I would likely consult it for specific syntax that I am not familiar with, like the HSOSC code. However, because I do not have a strong coding background I am very hesitant to use AI to help me code because skill building requires repetition and AI often eliminates that. Additionally, I don’t support the environmental impacts of data centers because they disprortionately impact minority communities and perpetuate systemic environmental racism so I try to avoid using AI as much as possible when it isn’t explicitly tied to my grade."
+  },
+  {
+    "objectID": "posts/first-post.html",
+    "href": "posts/first-post.html",
+    "title": "First Week of MicroPs",
+    "section": "",
+    "text": "I want to use this semester to get more comfortable with coding so that I can independently code in grad school and function at an industry level. Additionally, I want to try coding more complex programs. I also really want to code more FSMs."
   }
 ]
