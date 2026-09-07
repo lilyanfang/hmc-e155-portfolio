@@ -1,6 +1,6 @@
 ---
-title: "Hello Quarto"
-description: "Welcome to my Quarto portfolio"
+title: "First Week of MicroPs"
+description: "Goals for the semester"
 author: "Lily Anfang"
 date: "9/4/2026"
 categories:
@@ -8,3 +8,4 @@ categories:
   - labreport
 draft: false
 ---
+I want to use this semester to get more comfortable with coding so that I can independently code in grad school and function at an industry level. Additionally, I want to try coding more complex programs. I also really want to code more FSMs. 

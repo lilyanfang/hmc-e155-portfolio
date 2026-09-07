@@ -44,6 +44,12 @@ The schematic and block diagram below show the layout of modules and the wiring 
 ![](images/schematic.png)
 :::
 
+## Code
+
+Below is my code for the modules, testbenches, and AI reflection.
+
+[code](https://github.com/lilyanfang/hmc-e155-lab1/tree/main)
+
 ## Testbench Results
 
 The switches to 7-segment LEDs testbench ran successfully. As shown below, the tests all showed anticipated behavior. Additionally, the waveforms match the truth table (noting that the diodes are on for a seg value of 0). 
@@ -64,8 +70,8 @@ The top modulue matches anticipated results as well. As expected, the counter an
 
 ::: {.callout-important collapse="false" title="testbench waveforms and tests for the top module"}
 ![](images/topwave1.png)
-![](images/toptests.png)
 ![](images/topwave2.png)
+![](images/toptests.png)
 :::
 
 ## Hardware Results
