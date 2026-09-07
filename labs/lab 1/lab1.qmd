@@ -23,7 +23,7 @@ To make LED 2 blink at 2.4Hz, I used a counter to convert from the on-board high
 ![](images/CounterCalc.png)
 :::
 
-For LEDs 0 & 1, I programed them with combinational logic from switches 0-3 using behavioral verilog.
+For LEDs 0 and 1, I programed them with combinational logic from switches 0-3 using behavioral verilog.
 
 For the 7 segment display, I programed the different states using a case statement. The numbering scheme and truth table I used is shown below. 
 
