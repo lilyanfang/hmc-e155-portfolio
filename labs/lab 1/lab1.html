@@ -130,6 +130,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
   </ul>
 </nav>
     </div>
@@ -171,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="design-and-testing-methodology" class="level2">
 <h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
 <p>Hardware was assembled following the <a href="https://hmc-e155.github.io/lab/lab1/">Lab 1 Instructions</a>. The board was built using a combination of hand soldering and soldering paste.</p>
-<p>To make LED 2 blink at 2.4Hz, I used a counter to convert from the high speed oscillator, at 6MHz, to a square wave with a duty cycle of 50%. To do this, I found the ratio between the input and output frequency and used that as the counter MAX. Then, if the counter was between HALFMAX and MAX I had the LED on.</p>
+<p>To make LED 2 blink at 2.4Hz, I used a counter to convert from the on-board high speed oscillator (HSOSC) to a square wave with a duty cycle of 50%. To do this, I found the ratio between the input, 6MHz, and output frequencies and used that as the counter MAX. Then, I had the LED turn on if the counter was higher than half the MAX value and turn off when the counter hit the MAX and reset to zero.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="spoiler: counter calculations">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -188,6 +189,29 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+<p>For LEDs 0 &amp; 1, I programed them with combinational logic from switches 0-3 using behavioral verilog.</p>
+<p>For the 7 segment display, I programed the different states using a case statement. The numbering scheme and truth table I used is shown below.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: 7-segment display layout and truth table">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: 7-segment display layout and truth table
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/7seg.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>To ensure that the GPIO pins remained within current limits, 7mA was targeted for the current across each pin. Referencing the data sheet for the 7-segment LED, at 5mA the voltage drop across each diode is approximately 1.9V. Using, the 3.3V power supply to the shared anodes, this requires the current limiting resistor to be 200 ohms. Using real resistor values, 185 ohm resistors were chosen. The 3.3V voltage supply was used to reduce the total power draw from the board.</p>
+<p>To test, three different test benches were created. The first was a test bench for the switch to 7-segment display. Becuase there were only 16 possible inputs, all input options were tested with assert statements. For the counter testbench, the WIDTH, MAX, and HALFMAX parameters were set to 4, 8, and 4 respectively. This allowed the test to run far faster. The test bench toggled enable and reset independently and together and the counter and led signals were observed. Because the counter signal is internal, no assert statements were used. Finally, a reduced set of test conditions was used to test the top module. s = [0000, 0101, 1010, 1111] was used to encompass the different possible inputs to the logic gates. Assert statements were used to test both the logic gates and the 7-segment display (to ensure that the modules were correctly linked). Additionally, the counter signal was observed in the waveform to ensure it counted correctly.</p>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
 
 
 </section>
