@@ -133,6 +133,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
   <li><a href="#testbench-results" id="toc-testbench-results" class="nav-link" data-scroll-target="#testbench-results">Testbench Results</a></li>
   <li><a href="#hardware-results" id="toc-hardware-results" class="nav-link" data-scroll-target="#hardware-results">Hardware Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -288,6 +290,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="hardware-results" class="level2">
 <h2 class="anchored" data-anchor-id="hardware-results">Hardware Results</h2>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+</section>
+<section id="ai-prototype-summary" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>I used Gemini to write the code. It wrote code that successfully synthesized on the first try. I would say the quality is pretty high because the code included multiple comments correctly explaining the lines. However, these comments feel more like they were taken from a lecture and less like actual coding project because they explain the math but not the rationale for why certain design choices were made. However, there are a couple major flaws with the code that it wrote. Primarily, this code doesn’t include a reset signal which, while not required, would likely be more useful for application. Secondly, at no point in the code is the LED’s state explicitly set to 0 or 1. Instead, the code just toggles the LED value with a not gate. As such, if the LED starts out in an undefined state, this code could never get it to a defined state and the LED wouldn’t blink.</p>
+<p>The code it wrote used “SB_HFOSC” and “u_hfosc” which differed from the syntax we were provided in class but functioned the same. Other than that, there was really no new structures or syntax provided although it used a different method for toggling the LED than what I wrote in my code.</p>
+<p>If I were to use an LLM in my future workflow, I would likely consult it for specific syntax that I am not familiar with, like the HSOSC code. However, because I do not have a strong coding background I am very hesitant to use AI to help me code because skill building requires repetition and AI often eliminates that. Additionally, I don’t support the environmental impacts of data centers because they disprortionately impact minority communities and perpetuate systemic environmental racism so I try to avoid using AI as much as possible when it isn’t explicitly tied to my grade.</p>
 
 
 </section>

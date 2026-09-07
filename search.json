@@ -103,5 +103,19 @@
     "title": "Lab 1: FPGA and MCU Setup and Testing",
     "section": "Hardware Results",
     "text": "Hardware Results"
+  },
+  {
+    "objectID": "labs/lab 1/lab1.html#conclusion",
+    "href": "labs/lab 1/lab1.html#conclusion",
+    "title": "Lab 1: FPGA and MCU Setup and Testing",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "labs/lab 1/lab1.html#ai-prototype-summary",
+    "href": "labs/lab 1/lab1.html#ai-prototype-summary",
+    "title": "Lab 1: FPGA and MCU Setup and Testing",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary\nI used Gemini to write the code. It wrote code that successfully synthesized on the first try. I would say the quality is pretty high because the code included multiple comments correctly explaining the lines. However, these comments feel more like they were taken from a lecture and less like actual coding project because they explain the math but not the rationale for why certain design choices were made. However, there are a couple major flaws with the code that it wrote. Primarily, this code doesn’t include a reset signal which, while not required, would likely be more useful for application. Secondly, at no point in the code is the LED’s state explicitly set to 0 or 1. Instead, the code just toggles the LED value with a not gate. As such, if the LED starts out in an undefined state, this code could never get it to a defined state and the LED wouldn’t blink.\nThe code it wrote used “SB_HFOSC” and “u_hfosc” which differed from the syntax we were provided in class but functioned the same. Other than that, there was really no new structures or syntax provided although it used a different method for toggling the LED than what I wrote in my code.\nIf I were to use an LLM in my future workflow, I would likely consult it for specific syntax that I am not familiar with, like the HSOSC code. However, because I do not have a strong coding background I am very hesitant to use AI to help me code because skill building requires repetition and AI often eliminates that. Additionally, I don’t support the environmental impacts of data centers because they disprortionately impact minority communities and perpetuate systemic environmental racism so I try to avoid using AI as much as possible when it isn’t explicitly tied to my grade."
   }
 ]
