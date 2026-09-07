@@ -70,7 +70,19 @@ The top modulue matches anticipated results as well. As expected, the counter an
 
 ## Hardware Results
 
+To test on hardware, a switch was used for reset. As such, the code was modified to account for reset being low when pressed and otherwise high. This change was verified by modifying the testbench and it ran successfully. 
+
+When uploaded to the board, the code ran successfully. A full sweep of the switch inputs showed both LEDs 0 and 1 as well as the 7-segment LED display had expected behavior. Additionally, LED 2 blinked 24 times over a 10 second period (shout out Enzo for helping me count), showing that it was blinking at a speed of 2.4Hz. The hardware setup for the board is shown below. 
+
+::: {.callout-important collapse="false" title="hardware setup of board connected to 7-segment LED display"}
+![](images/board.jpg)
+![](images/7segdisplay.jpg)
+:::
+
 ## Conclusion
+
+In this lab I built and programed a board to control a 7-segment LED display and 2 LEDs with switches, as well as to blink an LED at a prespecified rate using the onboard high-speed oscillator. This required using both combinational and sequential logic. Additionally, I coded 3 different test benches to verify my code. 
+This lab took me about 18 hours but only about 10 of those hours were spent coding. 
 
 ## AI Prototype Summary
 
