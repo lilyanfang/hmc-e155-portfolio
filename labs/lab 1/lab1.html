@@ -212,14 +212,30 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>To ensure that the GPIO pins remained within current limits, 7mA was targeted for the current across each pin. Referencing the data sheet for the 7-segment LED, at 5mA the voltage drop across each diode is approximately 1.9V. Using, the 3.3V power supply to the shared anodes, this requires the current limiting resistor to be 200 ohms. Using real resistor values, 185 ohm resistors were chosen. The 3.3V voltage supply was used to reduce the total power draw from the board.</p>
+<p>To ensure that the GPIO pins remained within current limits, 7mA was targeted for the current across each pin. Referencing the data sheet for the 7-segment LED, at 7mA the voltage drop across each diode is approximately 1.9V. Using, the 3.3V power supply to the shared anodes, this requires the current limiting resistor to be 200 ohms. Using real resistor values, 185 ohm resistors were chosen. The 3.3V voltage supply was used to reduce the total power draw from the board.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: 7-segment LED display current-limiting resistor calculations">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: 7-segment LED display current-limiting resistor calculations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>(3.3V-1.9V)/7mA = 200ohms</p>
+</div>
+</div>
+</div>
 <p>To test, three different test benches were created. The first was a test bench for the switch to 7-segment display. Becuase there were only 16 possible inputs, all input options were tested with assert statements. For the counter testbench, the WIDTH, MAX, and HALFMAX parameters were set to 4, 8, and 4 respectively. This allowed the test to run far faster. The test bench toggled enable and reset independently and together and the counter and led signals were observed. Because the counter signal is internal, no assert statements were used. Finally, a reduced set of test conditions was used to test the top module. s = [0000, 0101, 1010, 1111] was used to encompass the different possible inputs to the logic gates. Assert statements were used to test both the logic gates and the 7-segment display (to ensure that the modules were correctly linked). Additionally, the counter signal was observed in the waveform to ensure it counted correctly.</p>
 </section>
 <section id="technical-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
 <p>The schematic and block diagram below show the layout of modules and the wiring of the board. The modules were designed so that the internal high frequency oscillator, the switch to 7-segment display, and the counter are all individual modules called by the top module. The top module also contains the logic statements for LEDS 0 and 1 to reduce the lines of written code.</p>
 <div class="callout callout-style-default callout-caution callout-titled" title="spoiler: schematic and block diagram">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -228,7 +244,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><img src="images/blockdiagram.png" class="img-fluid"> <img src="images/schematic.png" class="img-fluid"></p>
 </div>
@@ -244,7 +260,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="testbench-results">Testbench Results</h2>
 <p>The switches to 7-segment LEDs testbench ran successfully. As shown below, the tests all showed anticipated behavior. Additionally, the waveforms match the truth table (noting that the diodes are on for a seg value of 0).</p>
 <div class="callout callout-style-default callout-important callout-titled" title="testbench waveforms and test results for switches to 7-segment LEDs">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -253,7 +269,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><img src="images/seg7wave.png" class="img-fluid"> <img src="images/seg7tests.png" class="img-fluid"></p>
 </div>
@@ -261,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>The counter testbech also ran successfully. As shown below, the counter only activates when reset is off and enable is on. Additionally, the counter counts up to the specifed MAX paramet (for this test it was 8) before looping back to zero as expected. Finally, the LED 2 output signal also matches expectations as it is only on for the durration when the counter is between HALFMAX (4 in this case) and the MAX.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="testbench waveforms for the counter">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -270,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><img src="images/counterwave1.png" class="img-fluid"> <img src="images/counterwave2.png" class="img-fluid"></p>
 </div>
@@ -278,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>The top modulue matches anticipated results as well. As expected, the counter and switch to 7-segment modules both work and show the same behavior as when they were tested individually. Additionally, the logic gates for LED 0 and 1 match the provided truth tables. Finally, estimating the wavelength of one clock cycle for the HSOSC, it is approximately 164ns, which maps to a frequency of roughly 6MHz as intended. As such, it can be concluded that at the set parameters for MAX and width, LED 2 will blink at 2.4 Hz because the HSOSC clock is at the intended speed and the counter module behaves correctly.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="testbench waveforms and tests for the top module">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -287,7 +303,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><img src="images/topwave1.png" class="img-fluid"> <img src="images/topwave2.png" class="img-fluid"> <img src="images/toptests.png" class="img-fluid"></p>
 </div>
@@ -299,7 +315,7 @@ ul.task-list li input[type="checkbox"] {
 <p>To test on hardware, a switch was used for reset. As such, the code was modified to account for reset being low when pressed and otherwise high. This change was verified by modifying the testbench and it ran successfully.</p>
 <p>When uploaded to the board, the code ran successfully and met all specifications. A full sweep of the switch inputs showed both LEDs 0 and 1 as well as the 7-segment LED display had expected behavior. Additionally, LED 2 blinked 24 times over a 10 second period (shout out Enzo for helping me count), showing that it was blinking at a speed of 2.4Hz. The hardware setup for the board is shown below.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="hardware setup of board connected to 7-segment LED display">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -308,7 +324,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p><img src="images/board.jpg" class="img-fluid"> <img src="images/7segdisplay.jpg" class="img-fluid"></p>
 </div>
