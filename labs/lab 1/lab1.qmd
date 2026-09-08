@@ -31,7 +31,11 @@ For the 7 segment display, I programed the different states using a case stateme
 ![](images/7segLED.png)
 :::
 
-To ensure that the GPIO pins remained within current limits, 7mA was targeted for the current across each pin. Referencing the data sheet for the 7-segment LED, at 5mA the voltage drop across each diode is approximately 1.9V. Using, the 3.3V power supply to the shared anodes, this requires the current limiting resistor to be 200 ohms. Using real resistor values, 185 ohm resistors were chosen. The 3.3V voltage supply was used to reduce the total power draw from the board. 
+To ensure that the GPIO pins remained within current limits, 7mA was targeted for the current across each pin. Referencing the data sheet for the 7-segment LED, at 7mA the voltage drop across each diode is approximately 1.9V. Using, the 3.3V power supply to the shared anodes, this requires the current limiting resistor to be 200 ohms. Using real resistor values, 185 ohm resistors were chosen. The 3.3V voltage supply was used to reduce the total power draw from the board. 
+
+::: {.callout-caution collapse="true" title="spoiler: 7-segment LED display current-limiting resistor calculations"}
+(3.3V-1.9V)/7mA = 200ohms
+:::
 
 To test, three different test benches were created. The first was a test bench for the switch to 7-segment display. Becuase there were only 16 possible inputs, all input options were tested with assert statements. For the counter testbench, the WIDTH, MAX, and HALFMAX parameters were set to 4, 8, and 4 respectively. This allowed the test to run far faster. The test bench toggled enable and reset independently and together and the counter and led signals were observed. Because the counter signal is internal, no assert statements were used. Finally, a reduced set of test conditions was used to test the top module. s = [0000, 0101, 1010, 1111] was used to encompass the different possible inputs to the logic gates. Assert statements were used to test both the logic gates and the 7-segment display (to ensure that the modules were correctly linked). Additionally, the counter signal was observed in the waveform to ensure it counted correctly. 
 
