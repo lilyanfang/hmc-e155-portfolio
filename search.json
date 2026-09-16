@@ -102,7 +102,7 @@
     "href": "labs/lab 2/lab2.html#conclusion",
     "title": "Lab 2: Multiplexed 7-Segment Display",
     "section": "Conclusion",
-    "text": "Conclusion\nIn this lab I programed my board to drive two 7-segment displays using shared pins with a mux. I also drove a keypad with offset 25% duty cycle waves with hardware designed to support multiple key presses."
+    "text": "Conclusion\nIn this lab I programed my board to drive two 7-segment displays using shared pins with a mux. I also drove a keypad with offset 25% duty cycle waves with hardware designed to support multiple key presses. This lab took me 19 hours."
   },
   {
     "objectID": "labs/lab 2/lab2.html#ai-prototype-summary",
