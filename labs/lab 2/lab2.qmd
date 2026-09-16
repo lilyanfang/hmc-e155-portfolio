@@ -86,6 +86,7 @@ After some initial troubleshooting and reorganizing the pin assignments, the har
 ## Conclusion
 
 In this lab I programed my board to drive two 7-segment displays using shared pins with a mux. I also drove a keypad with offset 25% duty cycle waves with hardware designed to support multiple key presses. 
+This lab took me 19 hours. 
 
 ## AI Prototype Summary
 
