@@ -8,7 +8,7 @@
 
 <meta name="author" content="Lily Anfang">
 
-<title>Lab 3: Keypad Scanner – E155 Portfolio</title>
+<title>Lab 2: Multiplexed 7-Segment Display – E155 Portfolio</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -123,15 +123,26 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a></li>
+  <li><a href="#hardware-results" id="toc-hardware-results" class="nav-link" data-scroll-target="#hardware-results">Hardware Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lab 3: Keypad Scanner</h1>
+<h1 class="title">Lab 2: Multiplexed 7-Segment Display</h1>
   <div class="quarto-categories">
     <div class="quarto-category">labreport</div>
   </div>
@@ -157,8 +168,317 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The goal of this lab is to gain practice with the various types of FSMs and to practice switch debouncing.</p>
+<p>This lab displays the two most recent inputs from a keypad on a dual 7-segment display accounting for both switch bouncing, multiple presses, and double presses. ## Design and Testing Methodology</p>
+<p>Hardware was assembled following the <a href="https://hmc-e155.github.io/lab/lab3/">Lab 3 Instructions</a>.</p>
+<p>The full system was driven by offset 25% duty cycle square waves at 100Hz being driven into the keypad rows. The voltage on the columns was then read off. To synchronize the inputs a series of flipflops were used. To debounce the inputs the clock cycles for which and input ran high were counted over a 2ms period and if the input was high for more than 50% of the time the output was high. This debouncing method is effective because it functions basically like an averaging system. However, there are a couple main drawbacks. primarily it has to be triggered by an enable from the scan module to ensure that it only uses the relevant data from the current row rather than across two rows. Additionally, it delays the 7-segment display output because it needs to fully run before any following logic can start. A method that might not have this issue would be to only output if the current input has remained constant for a certain period of time but that would likely require more complex code.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: output logic for the counter FSM in the scan module">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: output logic for the counter FSM in the scan module
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img1.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: scan module block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: scan module block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img7.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: debouncing module block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: debouncing module block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: sync module block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: sync module block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The scan module was already testing in Lab 2. The sync module was tested by checking that an input propogated through it in 3 clock cycles. The debouncing module was tested by testing various ratios of on to off for the input and ensuring that the output was correct.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: sync testbench waveform">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: sync testbench waveform
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img4.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: debouncing testbench waveform and tests">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: debouncing testbench waveform and tests
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img5.png" class="img-fluid"> <img src="images/img6.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Given the output states from the scan FSM and the enable signal from the debounce module, which keys were pressed was determined by taking in the current state of which row was high and using that to determine which key each of the column readings mapped to. Then, only those keys had their state updated. This process was enabled by a signal sent from the debounce module that the debouncing process was complete.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: pressed module logic mapping">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: pressed module logic mapping
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img10.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>To test this FSM I ran tests to ensure that given which row was asserted, the column values mapped to the correct digit in the keypress output.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: pressed module testbench waveforms and tests">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: pressed module testbench waveforms and tests
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img8.png" class="img-fluid"> <img src="images/img9.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>This state was then sent to a display state module which first raised flags for all non-valid conditions (no key pressed, multiple keys pressed, or one button held down) then used those flags to enable a system that mapped to the output.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: display state block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: display state block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img11.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: display state state transition diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: display state state transition diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img12.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: input flags state table">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: input flags state table
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img13.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>For simplicity, this module was later split into three sub modules where on handled the flags and state, one handled the output logic, and an additional encoder was used to convert from the 16 bit output to the 4 bit output used by subsequent modules. However, the testbenches were executed for the display state module and enable module to maintain simplicity.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: displaystate testbench waveforms and tests">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: displaystate testbench waveforms and tests
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img14.png" class="img-fluid"> <img src="images/img15.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: encoder testbench waveforms and tests">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: encoder testbench waveforms and tests
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img16.png" class="img-fluid"> <img src="images/img17.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Finally, the correct numbers were fed into a mux followed by the 7-segment display output logic. Both the mux and seg7 modules have been tested in previous labs.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: muxcounter block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: muxcounter block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img18.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>To evalute the whole design, I coded a testbench to minimic general inputs including switchbounce and signals following both on and offset from the clock cycle. I also verified that inputs were being fed between subsequent modules correctly.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spolier: top testbench waveform">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spolier: top testbench waveform
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img19.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The schematic and block diagram below show the layout of modules and the wiring of the board.</p>
+<p>I chose to make my FSMs communicate primarily by sending enable singals to one another so that they only activiated at the appropriate time. My only cannonical FSM is the display state FSM, specifically the flagging module. I used a cannonical FSM becuase there were only 4 states that needed to be covered. I used non-cannonical FSMs for anything initiated with a counter because of the sheer volume of states, such as for my debouncing module. I used communicating FSMs for various instances where I just wanted to enable a flop to pass values. The communicating FSMs did cause some issues with timing and accounting for behavior across multiple clock cycles which was a major drawback. However, they also allowed for my other FSMs to remain in proper cannonical or noncannonical form. The biggest issue for me was getting the doublepress condition to work because of the clock cycles required to feed it between modules. I ended up solving this by adding an additional flipflop to help with timeing.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: schematic and block diagram for Lab 3 9/20/26 by Lily Anfang">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: schematic and block diagram for Lab 3 9/20/26 by Lily Anfang
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/img20.png" class="img-fluid"> <img src="images/img21.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="code" class="level2">
+<h2 class="anchored" data-anchor-id="code">Code</h2>
+<p>Below is my code for the modules, testbenches, and AI reflection.</p>
+<p><a href="https://github.com/lilyanfang/hmc-e155-lab3">code</a></p>
+</section>
+<section id="hardware-results" class="level2">
+<h2 class="anchored" data-anchor-id="hardware-results">Hardware Results</h2>
+<p>After some updates to the cycle time and a slight variation in how the code handled a single button being pushed twice, the hardware worked successfully. The code can successfully handle the multipress, held, and repeated press conditions. Additionally, the numbers on the display move right to left as instructed.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="hardware setup">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>hardware setup
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><img src="images/hardware.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this lab I programed my board to drive two 7-segment displays with the two most recent inputs from a keypad using debouncing methods and various FSMs.</p>
+<p>This lab took me 20 hours.</p>
+</section>
+<section id="ai-prototype-summary" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>I used Gemini to write the code. It wrote code that successfully that did not successfully synthesize. It had a repeated error where it would incorrectly write the 4 bit binary string using syntax that wasn’t in system verilog. Ironically, it would often comment that the code was incorrect and then put the correct version below but it wouldn’t comment out the problem line resulting in synthesis issues. Once I commented out the mistake lines the code compiled fine and looked similar to the code I had been using.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
