@@ -32,7 +32,7 @@ The full system was driven by offset 25% duty cycle square waves at 100Hz being 
 :::
 
 ::: {.callout-caution collapse="true" title="spoiler: sync module block diagram"}
-![](images/img2.png)
+![](images/img3.png)
 :::
 
 The scan module was already testing in Lab 2. The sync module was tested by checking that an input propogated through it in 3 clock cycles. The debouncing module was tested by testing various ratios of on to off for the input and ensuring that the output was correct. 
