@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Lily Anfang">
+<meta name="dcterms.date" content="2026-09-29">
 
 <title>Lab 4: Digital Audio – E155 Portfolio</title>
 <style>
@@ -123,8 +124,20 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a></li>
+  <li><a href="#hardware-results" id="toc-hardware-results" class="nav-link" data-scroll-target="#hardware-results">Hardware Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-summary" id="toc-ai-prototype-summary" class="nav-link" data-scroll-target="#ai-prototype-summary">AI Prototype Summary</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -148,6 +161,12 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 29, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -157,8 +176,204 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The goal of this lab was to code an MCU such that is could drive a speaker circuit through an enabled GPIO pin using timer peripherals. The code should take in a list of paired frequency and durations lists and convert them into a series of square waves to drive the amplifier circuit.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<p>To design the code I started by creating header and .c files for the clock, GPIO, and TIMx configurations based on the ones provided in the clock configuration practice problem. I used the MSI clock running at 4MHz as my system clock and used it to power my timers. I chose to use TIM6 and TIM7 as my timers because they have very simple designs. I configured TIM6 to count to 3999 to convert from the 4MHz clock to a 1kHz clock so that it sent out an overload flag every millisecond. I configured TIM7 to have an overload flag every 1 microsecond but this was later reset in my main module based on the desired frequency.</p>
+<p>In my main module, I chose to use GPIOB_4 as my output pin. I then ran my initial clock configurations, GPIO configuration, and timer configurations to set up all my pins and peripherals. I then used some intial processing to convert to find the number of paired frequencies and durations in the input array. I then used nested for and while loops to execute the counting functions.</p>
+<p>To account for the possibility of a rest, I first use a boolean to check if the input frequency is zero. If the frequency isn’t zero, I then calculate what I want TIM7 to count up to using the equation below. I divide by a factor of two becuase I want to create a 50% duty cycle square wave so I need to toggle the bit at twice the desired frequency. I then subtract one off of this to account for indexing begining at zero.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Equation for Count">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Equation for Count
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/countEq.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Given how I choose to convert from the given frequency to the counter value, there is some error for the output frequency. This is because the code truncates non-integer values since I set the count as an int. However, the error is less than 1% for all frequencies in the given code as shown in the table below. In this case, checking the minimum and maximum frequency values is not sufficent to prove the error stays within bounds because the error depends both on the input frequency’s size as well as the difference between the exact and truncated count. However, the maximum frequency for which there is garunteed to be less than 1% error can be calculated using the equation below. For the given clock speed, this value is found to be 20kHz which is at the top of the human hearing range. Additionally, the minumum freuency is set by the maximum value of count which is a 16 bit integer so it is 31Hz.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Frequency Error Calculations">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Frequency Error Calculations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/tableCalc.png" class="img-fluid"> <img src="images/Table.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Equation for Maximum Frequency">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Equation for Maximum Frequency
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/maxF.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Equation for Minimum Frequency">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Equation for Minimum Frequency
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/minF.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>To then actually operate the timers, I have then count up to the max count at which point they output a flag. I then use this flag to flip the output bit for TIM7 (which controls the output frequency) and to end a while loop for TIM6 (which controls the duration). I then set the flag back to zero and researt the counters.</p>
+<p>To control the duration of a note, I have a while loop where each iteration of the loop lasts 1ms and increments down until the time remaining is 0. If the input frequency isn’t a rest, the output pin should toggle while the loop increments and if the it is a rest, the pin shouldn’t change. Because of this method of implementation, the minimum supported duration for a note is the length of one counting cycle, which is 1ms given the clock has a frequency of 4MHz and counts to 3999. Conversely, the maximum clock cycle duration is the determined by the largest value that can be input into a an unsigned 32 bit integer which results to 65.535s. However, because there is very little pause between notes, a longer duration could be broken into multiple notes of the max duration with very little difference in quality.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Equations for Minimum &amp; Maximum Duration">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Equations for Minimum &amp; Maximum Duration
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/duration.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>My design for the audio amplifier is shown below. This design is largely based on the recommended use schematic for a gain of 20 from the datasheet. Given that the output voltage from the GPIO pin is around 4.6V for a high output and the output from the amplifier should have a peak to peak voltage of 2.8V I made a voltage divider with a 10kohm pot to ensure that the output voltage remained in spec and allow for volume control.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Design of the Volume Control">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Design of the Volume Control
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/vol.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Schematic">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Schematic
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/schematic.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>For the design on the development board. The OUTPUT macro in my code maps to GPIOB_4 which is pin 15 on the MCU and PB4 on the board. Additionally, my design uses the MSI clock and timers TIM6 and TIM7 which are all internal to the MCU.</p>
+<p><a href="https://hmc-e155.github.io/assets/doc/E155%20FA22%20Development%20Board%20Schematic.pdf">Development Board Schematic</a></p>
+</section>
+<section id="code" class="level2">
+<h2 class="anchored" data-anchor-id="code">Code</h2>
+<p><a href="https://github.com/lilyanfang/hmc-e155-lab4">Lab 4 Repo</a></p>
+<p>In addition to the starter code, I also added my own muscial arrangement of Seven Nation Army by The White Stripes.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Sheet Music and Mapping For Seven Nation Army">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Sheet Music and Mapping For Seven Nation Army
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><img src="images/music.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="hardware-results" class="level2">
+<h2 class="anchored" data-anchor-id="hardware-results">Hardware Results</h2>
+<p>The hardware works as expected. Für Elise is played at the correct frequency for duration for the notes. The rests are also correctly observed. The volume control also works with the input and output voltages still staying fully in spec when the volume is set to max (shown below). The volume range also covers the whole range of the pot.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Oscilliscope Traces for Input and Output Voltages through the Audio Amp with Max Volume">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Oscilliscope Traces for Input and Output Voltages through the Audio Amp with Max Volume
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/scope_4.png" class="img-fluid"> Trace of pin output (yellow) and input voltage to the LM386 (green) <img src="images/scope_5.png" class="img-fluid"> Trace of pin output (yellow) and output voltage from the LM386 (green)</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Hardware Layout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Hardware Layout
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/hardware.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In conclusion, I coded an MCU and built an audio amplification circuit that can play music from any array containing note durations and frequencies so long as the durations and frequencies are within bounds. I spent 14 hours on this lab.</p>
+</section>
+<section id="ai-prototype-summary" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>Gemini answered the question technically correctly as it successfully described how to use timers TIM15 and TIM16. It correctly showed the equations that were relevant as well as the bits that needed to be set. However, its answer differed from mine because it chose more complex timers when TIM6 and TIM7 are easier to implement and can still satisfy all requirements. Given that it was specifically asked to choose timers that easily map to output pins I understand why it might have thought TIM15 and TIM16 were better given that they have physical output channels. However, when I asked why it didn’t say TIM6 and TIM7 it incorrectly claimed that they couldn’t be used for this task. This is a flase statement because while they require mapping to a GPIO pin, the prompt asks for “easy mapping” not “direct mapping”.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

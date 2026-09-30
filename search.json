@@ -49,6 +49,104 @@
     "text": "Lab 7 - The Advanced Encryption Standard (AES)"
   },
   {
+    "objectID": "labs/lab 6/lab6.html#design-and-testing-methodology",
+    "href": "labs/lab 6/lab6.html#design-and-testing-methodology",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology"
+  },
+  {
+    "objectID": "labs/lab 6/lab6.html#technical-documentation",
+    "href": "labs/lab 6/lab6.html#technical-documentation",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation"
+  },
+  {
+    "objectID": "labs/lab 6/lab6.html#code",
+    "href": "labs/lab 6/lab6.html#code",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "Code",
+    "text": "Code"
+  },
+  {
+    "objectID": "labs/lab 6/lab6.html#hardware-results",
+    "href": "labs/lab 6/lab6.html#hardware-results",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "Hardware Results",
+    "text": "Hardware Results"
+  },
+  {
+    "objectID": "labs/lab 6/lab6.html#conclusion",
+    "href": "labs/lab 6/lab6.html#conclusion",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "labs/lab 6/lab6.html#ai-prototype-summary",
+    "href": "labs/lab 6/lab6.html#ai-prototype-summary",
+    "title": "Lab 6: The Internet of Things and Serial Peripheral Interface",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary"
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html",
+    "href": "labs/lab 4/lab4.html",
+    "title": "Lab 4: Digital Audio",
+    "section": "",
+    "text": "The goal of this lab was to code an MCU such that is could drive a speaker circuit through an enabled GPIO pin using timer peripherals. The code should take in a list of paired frequency and durations lists and convert them into a series of square waves to drive the amplifier circuit."
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#introduction",
+    "href": "labs/lab 4/lab4.html#introduction",
+    "title": "Lab 4: Digital Audio",
+    "section": "",
+    "text": "The goal of this lab was to code an MCU such that is could drive a speaker circuit through an enabled GPIO pin using timer peripherals. The code should take in a list of paired frequency and durations lists and convert them into a series of square waves to drive the amplifier circuit."
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#design-and-testing-methodology",
+    "href": "labs/lab 4/lab4.html#design-and-testing-methodology",
+    "title": "Lab 4: Digital Audio",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\nTo design the code I started by creating header and .c files for the clock, GPIO, and TIMx configurations based on the ones provided in the clock configuration practice problem. I used the MSI clock running at 4MHz as my system clock and used it to power my timers. I chose to use TIM6 and TIM7 as my timers because they have very simple designs. I configured TIM6 to count to 3999 to convert from the 4MHz clock to a 1kHz clock so that it sent out an overload flag every millisecond. I configured TIM7 to have an overload flag every 1 microsecond but this was later reset in my main module based on the desired frequency.\nIn my main module, I chose to use GPIOB_4 as my output pin. I then ran my initial clock configurations, GPIO configuration, and timer configurations to set up all my pins and peripherals. I then used some intial processing to convert to find the number of paired frequencies and durations in the input array. I then used nested for and while loops to execute the counting functions.\nTo account for the possibility of a rest, I first use a boolean to check if the input frequency is zero. If the frequency isn’t zero, I then calculate what I want TIM7 to count up to using the equation below. I divide by a factor of two becuase I want to create a 50% duty cycle square wave so I need to toggle the bit at twice the desired frequency. I then subtract one off of this to account for indexing begining at zero.\n\n\n\n\n\n\nCautionspoiler: Equation for Count\n\n\n\n\n\n\n\n\n\nGiven how I choose to convert from the given frequency to the counter value, there is some error for the output frequency. This is because the code truncates non-integer values since I set the count as an int. However, the error is less than 1% for all frequencies in the given code as shown in the table below. In this case, checking the minimum and maximum frequency values is not sufficent to prove the error stays within bounds because the error depends both on the input frequency’s size as well as the difference between the exact and truncated count. However, the maximum frequency for which there is garunteed to be less than 1% error can be calculated using the equation below. For the given clock speed, this value is found to be 20kHz which is at the top of the human hearing range. Additionally, the minumum freuency is set by the maximum value of count which is a 16 bit integer so it is 31Hz.\n\n\n\n\n\n\nCautionspoiler: Frequency Error Calculations\n\n\n\n\n\n \n\n\n\n\n\n\n\n\n\nCautionspoiler: Equation for Maximum Frequency\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCautionspoiler: Equation for Minimum Frequency\n\n\n\n\n\n\n\n\n\nTo then actually operate the timers, I have then count up to the max count at which point they output a flag. I then use this flag to flip the output bit for TIM7 (which controls the output frequency) and to end a while loop for TIM6 (which controls the duration). I then set the flag back to zero and researt the counters.\nTo control the duration of a note, I have a while loop where each iteration of the loop lasts 1ms and increments down until the time remaining is 0. If the input frequency isn’t a rest, the output pin should toggle while the loop increments and if the it is a rest, the pin shouldn’t change. Because of this method of implementation, the minimum supported duration for a note is the length of one counting cycle, which is 1ms given the clock has a frequency of 4MHz and counts to 3999. Conversely, the maximum clock cycle duration is the determined by the largest value that can be input into a an unsigned 32 bit integer which results to 65.535s. However, because there is very little pause between notes, a longer duration could be broken into multiple notes of the max duration with very little difference in quality.\n\n\n\n\n\n\nCautionspoiler: Equations for Minimum & Maximum Duration"
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#technical-documentation",
+    "href": "labs/lab 4/lab4.html#technical-documentation",
+    "title": "Lab 4: Digital Audio",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nMy design for the audio amplifier is shown below. This design is largely based on the recommended use schematic for a gain of 20 from the datasheet. Given that the output voltage from the GPIO pin is around 4.6V for a high output and the output from the amplifier should have a peak to peak voltage of 2.8V I made a voltage divider with a 10kohm pot to ensure that the output voltage remained in spec and allow for volume control.\n\n\n\n\n\n\nCautionspoiler: Design of the Volume Control\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCautionspoiler: Schematic\n\n\n\n\n\n\n\n\n\nFor the design on the development board. The OUTPUT macro in my code maps to GPIOB_4 which is pin 15 on the MCU and PB4 on the board. Additionally, my design uses the MSI clock and timers TIM6 and TIM7 which are all internal to the MCU.\nDevelopment Board Schematic"
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#code",
+    "href": "labs/lab 4/lab4.html#code",
+    "title": "Lab 4: Digital Audio",
+    "section": "Code",
+    "text": "Code\nLab 4 Repo\nIn addition to the starter code, I also added my own muscial arrangement of Seven Nation Army by The White Stripes.\n\n\n\n\n\n\nImportantSheet Music and Mapping For Seven Nation Army"
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#hardware-results",
+    "href": "labs/lab 4/lab4.html#hardware-results",
+    "title": "Lab 4: Digital Audio",
+    "section": "Hardware Results",
+    "text": "Hardware Results\nThe hardware works as expected. Für Elise is played at the correct frequency for duration for the notes. The rests are also correctly observed. The volume control also works with the input and output voltages still staying fully in spec when the volume is set to max (shown below). The volume range also covers the whole range of the pot.\n\n\n\n\n\n\nCautionspoiler: Oscilliscope Traces for Input and Output Voltages through the Audio Amp with Max Volume\n\n\n\n\n\n Trace of pin output (yellow) and input voltage to the LM386 (green)  Trace of pin output (yellow) and output voltage from the LM386 (green)\n\n\n\n\n\n\n\n\n\nCautionspoiler: Hardware Layout"
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#conclusion",
+    "href": "labs/lab 4/lab4.html#conclusion",
+    "title": "Lab 4: Digital Audio",
+    "section": "Conclusion",
+    "text": "Conclusion\nIn conclusion, I coded an MCU and built an audio amplification circuit that can play music from any array containing note durations and frequencies so long as the durations and frequencies are within bounds. I spent 14 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab 4/lab4.html#ai-prototype-summary",
+    "href": "labs/lab 4/lab4.html#ai-prototype-summary",
+    "title": "Lab 4: Digital Audio",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary\nGemini answered the question technically correctly as it successfully described how to use timers TIM15 and TIM16. It correctly showed the equations that were relevant as well as the bits that needed to be set. However, its answer differed from mine because it chose more complex timers when TIM6 and TIM7 are easier to implement and can still satisfy all requirements. Given that it was specifically asked to choose timers that easily map to output pins I understand why it might have thought TIM15 and TIM16 were better given that they have physical output channels. However, when I asked why it didn’t say TIM6 and TIM7 it incorrectly claimed that they couldn’t be used for this task. This is a flase statement because while they require mapping to a GPIO pin, the prompt asks for “easy mapping” not “direct mapping”."
+  },
+  {
     "objectID": "labs/lab 2/lab2.html",
     "href": "labs/lab 2/lab2.html",
     "title": "Lab 2: Multiplexed 7-Segment Display",
@@ -236,6 +334,90 @@
     "title": "Lab 3: Keypad Scanner",
     "section": "AI Prototype Summary",
     "text": "AI Prototype Summary\nI used Gemini to write the code. It wrote code that successfully that did not successfully synthesize. It had a repeated error where it would incorrectly write the 4 bit binary string using syntax that wasn’t in system verilog. Ironically, it would often comment that the code was incorrect and then put the correct version below but it wouldn’t comment out the problem line resulting in synthesis issues. Once I commented out the mistake lines the code compiled fine and looked similar to the code I had been using."
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#design-and-testing-methodology",
+    "href": "labs/lab 5/lab5.html#design-and-testing-methodology",
+    "title": "Lab 5: Interrupts",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology"
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#technical-documentation",
+    "href": "labs/lab 5/lab5.html#technical-documentation",
+    "title": "Lab 5: Interrupts",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation"
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#code",
+    "href": "labs/lab 5/lab5.html#code",
+    "title": "Lab 5: Interrupts",
+    "section": "Code",
+    "text": "Code"
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#hardware-results",
+    "href": "labs/lab 5/lab5.html#hardware-results",
+    "title": "Lab 5: Interrupts",
+    "section": "Hardware Results",
+    "text": "Hardware Results"
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#conclusion",
+    "href": "labs/lab 5/lab5.html#conclusion",
+    "title": "Lab 5: Interrupts",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "labs/lab 5/lab5.html#ai-prototype-summary",
+    "href": "labs/lab 5/lab5.html#ai-prototype-summary",
+    "title": "Lab 5: Interrupts",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#design-and-testing-methodology",
+    "href": "labs/lab 7/lab7.html#design-and-testing-methodology",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#technical-documentation",
+    "href": "labs/lab 7/lab7.html#technical-documentation",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#code",
+    "href": "labs/lab 7/lab7.html#code",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "Code",
+    "text": "Code"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#hardware-results",
+    "href": "labs/lab 7/lab7.html#hardware-results",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "Hardware Results",
+    "text": "Hardware Results"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#conclusion",
+    "href": "labs/lab 7/lab7.html#conclusion",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "labs/lab 7/lab7.html#ai-prototype-summary",
+    "href": "labs/lab 7/lab7.html#ai-prototype-summary",
+    "title": "Lab 7: The Advanced Encryption Standard",
+    "section": "AI Prototype Summary",
+    "text": "AI Prototype Summary"
   },
   {
     "objectID": "posts/first-post.html",
