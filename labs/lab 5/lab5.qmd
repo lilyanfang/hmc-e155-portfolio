@@ -7,3 +7,29 @@ categories:
   - labreport
 draft: false
 ---
+
+## Introduction
+
+
+
+## Design and Testing Methodology
+
+
+
+## Technical Documentation
+
+
+
+## Code
+
+
+
+## Hardware Results
+
+
+
+## Conclusion
+
+
+
+## AI Prototype Summary
