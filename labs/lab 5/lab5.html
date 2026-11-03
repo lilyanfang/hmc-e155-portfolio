@@ -171,24 +171,97 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The goal of this lab is to understand how interrupts function.</p>
 </section>
 <section id="design-and-testing-methodology" class="level2">
 <h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<p>To convert from pulses out of the motor to tracking the revolutions per second I used two interrupts that triggered on the positive and negative edges of outputs A &amp; B and implemented an in line counter. This resulted in 4 added to the counter for every one pulse. I then had a timer set to 1 second. Every second, the timer would use the counter value and divide the inline counter value by 4*REV_RATIO (the number of pulses per revolution) to calculate the total revolutions per second. To implement the tracking of rotational direction I tested at every interrupt the relative position of A to B to test if A or B was leading. I did this using the knowledge that at the rising edge of the leading wave the other would be low and at the falling edge of the leading wave the other would be high.</p>
 </section>
 <section id="technical-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>To count the edges, I used interrupts on both the A and B signals. As such, my main loop would stop what it was doing when an interrupt event occured, run the interrupt command, and then return to the process in the main loop. This allows the system to ensure that every edge is counted, allowing for the best possible accuracy in counting edges. However, the trade off is that the time spent handling the interrupt signal is not factored into the timing for the 1 second counter. As such, while the count per cycle will be correct, the cycle length may not be exactly 1 second. My interrupt design is shown below</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Code flowchart">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Code flowchart
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/flow.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>To ensure the maximum possible accuracy, I used both edges on both A and B so that I would get 4 samples per pulse period. Then, I used the equation below to calculate motor speed. I also used the tables shown below to determine direction.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Equation for calculating motor speed">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Equation for calculating motor speed
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/calc.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Motor direction graphics">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Motor direction graphics
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/edge.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The board was wired to a 25GA-370 DC motor with a 120:1 pulse to revolution ratio as shown below.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Circuit schematic">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Circuit schematic
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/schematic.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
+<p><a href="https://github.com/lilyanfang/hmc-e155-lab5">Lab 5 Repo</a></p>
 </section>
 <section id="hardware-results" class="level2">
 <h2 class="anchored" data-anchor-id="hardware-results">Hardware Results</h2>
+<p>The design is able to correctly identify direction and speed of the motor, meeting all specifications.</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this lab I used interrupt to allow my MCU to determine the speed and direction a motor was spinning in based on the outputs of a quad encoder. I spent 16 hours on this lab.</p>
 </section>
 <section id="ai-prototype-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>After some additional prompting of the AI it was able to use EXTI to write the same interrupt handler that I initially used with some minor difference in syntax. However, its handler didn’t work because it had the same flaw my initial code had where it didn’t account for the waveforms not being perfectly square. As such, it would likely only be able to debug if it had the information I had from debugging.</p>
 
 
 </section>
