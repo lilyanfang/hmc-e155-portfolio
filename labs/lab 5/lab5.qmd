@@ -2,7 +2,7 @@
 title: "Lab 5: Interrupts"
 description: ""
 author: "Lily Anfang"
-date: ""
+date: "2026-11-2"
 categories:
   - labreport
 draft: false
@@ -21,7 +21,9 @@ To implement the tracking of rotational direction I tested at every interrupt th
 
 ## Technical Documentation
 
-To count the edges, I used interrupts on both the A and B signals. As such, my main loop would stop what it was doing when an interrupt event occured, run the interrupt command, and then return to the process in the main loop. This allows the system to ensure that every edge is counted, allowing for the best possible accuracy in counting edges. However, the trade off is that the time spent handling the interrupt signal is not factored into the timing for the 1 second counter. As such, while the count per cycle will be correct, the cycle length may not be exactly 1 second. My interrupt design is shown below
+The code updates at a 1Hz rate by having two counting systems. The first is a counter from previous code using an onboard timer to time 1ms. Then, and in line counter counts to 1000ms by incrementing a counter every time the 1ms timer resets. Thus, the code updates at a rate of 1HZ because it has an update period of 1000ms. 
+
+To count the edges, I used interrupts on both the A and B signals. As such, my main loop would stop what it was doing when an interrupt event occured, run the interrupt command, and then return to the process in the main loop. This allows the system to ensure that every edge is counted, allowing for the best possible accuracy in counting edges. However, the trade off is that the time spent handling the interrupt signal is not factored into the timing for the 1 second counter. As such, while the count per cycle will be correct, the cycle length may not be exactly 1 second. However, given that this will likely be a very small error and not within our concern for significant figures this is acceptable. My interrupt design is shown below. 
 
 ::: {.callout-caution collapse="true" title="spoiler: Code flowchart"}
 ![](images/flow.png)
