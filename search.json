@@ -406,46 +406,46 @@
     "text": "The goal of this lab is to construct a hardware accelerator that can run 128-bit AES encryption. The MCU should use SPI to send over plaintext and a cipher key and receive back ciphertext from a FPGA running the encryption software."
   },
   {
-    "objectID": "labs/lab 7/lab7.html#design-and-testing-methodology",
-    "href": "labs/lab 7/lab7.html#design-and-testing-methodology",
+    "objectID": "labs/lab 7/lab7.html#design-and-technical-documentation",
+    "href": "labs/lab 7/lab7.html#design-and-technical-documentation",
     "title": "Lab 7: The Advanced Encryption Standard",
-    "section": "Design and Testing Methodology",
-    "text": "Design and Testing Methodology"
+    "section": "Design and Technical Documentation",
+    "text": "Design and Technical Documentation\nFor an 128-bit AES encryption, the AES standard has the following 10 round process. This process is performed on a 4 by 4 state matrix derived from the input plaintext. Each state is 2 bytes in length and is defined as state [r,c] where r is the row and c is the column. As such, bits [127:96] are the bits in states [0-3,0] respectively. Similarly, bits [95:64] are states [0-3,1], bits [63:32] are states [0-3,2], and bits [31:0] are states [0-3,3].\n\n\n\n\n\n\nCautionspoiler: Round operations\n\n\n\n\n\n\n\n\n\nThe SubBytes module performs the SBox function on each state. SBox substitues each byte following a table that defines the output byte for any possible input byte. To do this without using up a significant number of LUTs on the FPGA, the code stores this table in RAM and uses a synchronous function to substitute each byte for its corresponding value from SBox.\n\n\n\n\n\n\nCautionspoiler: SubBytes block diagram\n\n\n\n\n\n\n\n\n\nThe ShiftRows module shifts each row to the left by the row number with the leftmost state wrapping around to the rightmost position. As such row 0 does not change, row 1 has every state shift to the left by one, row 2 has every state shift to the left by two, and row three has every row shift to the left by three. This is done in hardware by directly wiring each state input to the appropriate state output.\n\n\n\n\n\n\nCautionspoiler: ShiftRows block diagram\n\n\n\n\n\n\n\n\n\nThe MixColumns module performs matrix multiplication on the state matrix with a set matrix. This code was premade for this lab.\nThe AddRoundKey module XORs each column with the given word for that column and round. The word is calculated using the KeyExpansion Module.\n\n\n\n\n\n\nCautionspoiler: AddRoundKey block diagram\n\n\n\n\n\n\n\n\n\nThe KeyExpansion module calculates the four words for a given round. For round 0, words 0-3 are just the words in the key. For every subsequent round, the words follow a disntictive pattern. Each word takes in a temp value, the word generated directly before it, and w[i-Nk], the word used on the same column in the prior round (the word 4 iterations prior). For the words applied to columns 1-3, the word is calculated by XORing the temp value with w[i-Nk]. For the words applied to column 0, the tamp value is first fed through RotWord, which moves the last two bytes from the back of the word to the front of the word. That output is then fed into SubWord, which applies SBox to each 2-byte chunk of the word. That output is than XORed with an Rcon value specific to the round. Finally, that value is used as the new temp value that is XORed with w[i-NK].\n\n\n\n\n\n\nCautionspoiler: KeyExpansion block diagram\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCautionspoiler: CalcWord block diagram\n\n\n\n\n\n\n\n\n\nThe overall hardware then has the following design with the premade SPI module.\n\n\n\n\n\n\nCautionspoiler: AESCore block diagram\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCautionspoiler: AES top module block diagram"
   },
   {
-    "objectID": "labs/lab 7/lab7.html#technical-documentation",
-    "href": "labs/lab 7/lab7.html#technical-documentation",
+    "objectID": "labs/lab 7/lab7.html#software-test-results",
+    "href": "labs/lab 7/lab7.html#software-test-results",
     "title": "Lab 7: The Advanced Encryption Standard",
-    "section": "Technical Documentation",
-    "text": "Technical Documentation"
+    "section": "Software Test Results",
+    "text": "Software Test Results\nTesting with the provided test benches shows that the code passes both test benches with the expected waveforms. The code is able to output the corrected text and successfully communicate through the SPI network.\n\n\n\n\n\n\nImportantAEScore testbench waveform and output\n\n\n\n\n\n \n\n\n\n\n\n\n\n\n\nImportantAES testbench waveform and output"
   },
   {
     "objectID": "labs/lab 7/lab7.html#code",
     "href": "labs/lab 7/lab7.html#code",
     "title": "Lab 7: The Advanced Encryption Standard",
     "section": "Code",
-    "text": "Code"
+    "text": "Code\ncode"
   },
   {
     "objectID": "labs/lab 7/lab7.html#hardware-results",
     "href": "labs/lab 7/lab7.html#hardware-results",
     "title": "Lab 7: The Advanced Encryption Standard",
     "section": "Hardware Results",
-    "text": "Hardware Results"
+    "text": "Hardware Results\nWhen connected to hardware the device was able to fit on the board and successfully output, as indicated by the LED for pin PA9 activating. Additionally, the logic analyzer traces are shown below.\n\n\n\n\n\n\nCautionspoiler: Logic analyzer trace"
   },
   {
     "objectID": "labs/lab 7/lab7.html#conclusion",
     "href": "labs/lab 7/lab7.html#conclusion",
     "title": "Lab 7: The Advanced Encryption Standard",
     "section": "Conclusion",
-    "text": "Conclusion"
+    "text": "Conclusion\nFor this project I coded an FPGA to communicate over SPI with an MCU to run AES encryption on a 128-bit plaintext. I spent 17 hours on this lab."
   },
   {
     "objectID": "labs/lab 7/lab7.html#ai-prototype-summary",
     "href": "labs/lab 7/lab7.html#ai-prototype-summary",
     "title": "Lab 7: The Advanced Encryption Standard",
     "section": "AI Prototype Summary",
-    "text": "AI Prototype Summary"
+    "text": "AI Prototype Summary\nFor both of the code options generated by Gemeni it was able to do a pretty good job following the standard. When Gemeni didn’t have access to the AES standard the code was somewhat worse but the idea was still there. The main issue was that across both cases Gemeni had some syntax issues that caused errors. Additionally, Gemeni had timing issues because it didn’t account for any of the modules being synchronous and thus would have latency issues later on in implementation."
   },
   {
     "objectID": "posts/first-post.html",

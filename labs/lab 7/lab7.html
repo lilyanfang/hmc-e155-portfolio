@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Lily Anfang">
-<meta name="dcterms.date" content="2026-10-28">
+<meta name="dcterms.date" content="2026-11-03">
 
 <title>Lab 7: The Advanced Encryption Standard – E155 Portfolio</title>
 <style>
@@ -130,8 +130,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a></li>
-  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#design-and-technical-documentation" id="toc-design-and-technical-documentation" class="nav-link" data-scroll-target="#design-and-technical-documentation">Design and Technical Documentation</a></li>
+  <li><a href="#software-test-results" id="toc-software-test-results" class="nav-link" data-scroll-target="#software-test-results">Software Test Results</a></li>
   <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a></li>
   <li><a href="#hardware-results" id="toc-hardware-results" class="nav-link" data-scroll-target="#hardware-results">Hardware Results</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
@@ -164,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 28, 2026</p>
+      <p class="date">November 3, 2026</p>
     </div>
   </div>
   
@@ -180,23 +180,211 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>The goal of this lab is to construct a hardware accelerator that can run 128-bit AES encryption. The MCU should use SPI to send over plaintext and a cipher key and receive back ciphertext from a FPGA running the encryption software.</p>
 </section>
-<section id="design-and-testing-methodology" class="level2">
-<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="design-and-technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-technical-documentation">Design and Technical Documentation</h2>
+<p>For an 128-bit AES encryption, the AES standard has the following 10 round process. This process is performed on a 4 by 4 state matrix derived from the input plaintext. Each state is 2 bytes in length and is defined as state [r,c] where r is the row and c is the column. As such, bits [127:96] are the bits in states [0-3,0] respectively. Similarly, bits [95:64] are states [0-3,1], bits [63:32] are states [0-3,2], and bits [31:0] are states [0-3,3].</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Round operations">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Round operations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/round.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The SubBytes module performs the SBox function on each state. SBox substitues each byte following a table that defines the output byte for any possible input byte. To do this without using up a significant number of LUTs on the FPGA, the code stores this table in RAM and uses a synchronous function to substitute each byte for its corresponding value from SBox.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: SubBytes block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: SubBytes block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/subbytes.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The ShiftRows module shifts each row to the left by the row number with the leftmost state wrapping around to the rightmost position. As such row 0 does not change, row 1 has every state shift to the left by one, row 2 has every state shift to the left by two, and row three has every row shift to the left by three. This is done in hardware by directly wiring each state input to the appropriate state output.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: ShiftRows block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: ShiftRows block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/shiftrows.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The MixColumns module performs matrix multiplication on the state matrix with a set matrix. This code was premade for this lab.</p>
+<p>The AddRoundKey module XORs each column with the given word for that column and round. The word is calculated using the KeyExpansion Module.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: AddRoundKey block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: AddRoundKey block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/addroundkey.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The KeyExpansion module calculates the four words for a given round. For round 0, words 0-3 are just the words in the key. For every subsequent round, the words follow a disntictive pattern. Each word takes in a temp value, the word generated directly before it, and w[i-Nk], the word used on the same column in the prior round (the word 4 iterations prior). For the words applied to columns 1-3, the word is calculated by XORing the temp value with w[i-Nk]. For the words applied to column 0, the tamp value is first fed through RotWord, which moves the last two bytes from the back of the word to the front of the word. That output is then fed into SubWord, which applies SBox to each 2-byte chunk of the word. That output is than XORed with an Rcon value specific to the round. Finally, that value is used as the new temp value that is XORed with w[i-NK].</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: KeyExpansion block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: KeyExpansion block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/keyexpansion.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: CalcWord block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: CalcWord block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/calcword.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>The overall hardware then has the following design with the premade SPI module.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: AESCore block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: AESCore block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aescore.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: AES top module block diagram">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: AES top module block diagram
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
 </section>
-<section id="technical-documentation" class="level2">
-<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<section id="software-test-results" class="level2">
+<h2 class="anchored" data-anchor-id="software-test-results">Software Test Results</h2>
+<p>Testing with the provided test benches shows that the code passes both test benches with the expected waveforms. The code is able to output the corrected text and successfully communicate through the SPI network.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="AEScore testbench waveform and output">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>AEScore testbench waveform and output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><img src="images/aescore1.png" class="img-fluid"> <img src="images/aescore2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="AES testbench waveform and output">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>AES testbench waveform and output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p><img src="images/aes1.png" class="img-fluid"> <img src="images/aes2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
+<p><a href="https://github.com/lilyanfang/hmc-e155-lab7">code</a></p>
 </section>
 <section id="hardware-results" class="level2">
 <h2 class="anchored" data-anchor-id="hardware-results">Hardware Results</h2>
+<p>When connected to hardware the device was able to fit on the board and successfully output, as indicated by the LED for pin PA9 activating. Additionally, the logic analyzer traces are shown below.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="spoiler: Logic analyzer trace">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>spoiler: Logic analyzer trace
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="images/scope_2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>For this project I coded an FPGA to communicate over SPI with an MCU to run AES encryption on a 128-bit plaintext. I spent 17 hours on this lab.</p>
 </section>
 <section id="ai-prototype-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ai-prototype-summary">AI Prototype Summary</h2>
+<p>For both of the code options generated by Gemeni it was able to do a pretty good job following the standard. When Gemeni didn’t have access to the AES standard the code was somewhat worse but the idea was still there. The main issue was that across both cases Gemeni had some syntax issues that caused errors. Additionally, Gemeni had timing issues because it didn’t account for any of the modules being synchronous and thus would have latency issues later on in implementation.</p>
 
 
 </section>
